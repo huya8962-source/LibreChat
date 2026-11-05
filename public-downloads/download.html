@@ -1,0 +1,16 @@
+<!doctype html>
+<html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tải landing page Mộc Thanh</title>
+<style>body{font:16px system-ui,sans-serif;min-height:100svh;display:grid;place-items:center;background:#ede7db;color:#392c25;margin:0;padding:22px}main{max-width:500px;background:#fffaf2;border-radius:18px;padding:35px;box-shadow:0 14px 55px #392c2520}h1{font-size:26px}button{background:#6a6a53;color:white;border:0;padding:16px 22px;border-radius:9px;font:600 16px system-ui;cursor:pointer}p{line-height:1.65}small{color:#766b60}</style></head>
+<body><main><h1>Mộc Thanh — Landing Page V20</h1><p>Nhấn nút dưới đây để tải file HTML hoàn chỉnh, có sẵn hình ảnh bên trong.</p>
+<button id="download">Tải file HTML</button><p id="status" role="status">Sẵn sàng tải.</p><small>Dung lượng khoảng 5,9 MB.</small></main>
+<script>
+const urls=Array.from({length:15},(_,i)=>"https://raw.githack.com/huya8962-source/LibreChat/moc-thanh-public-download/public-downloads/chunks/part-"+String(i).padStart(2,'0')+".txt");
+const name="MocThanh_Landing_Desktop_V20_Cafe_NoCornWall.html";let busy=false;
+async function download(){if(busy)return;busy=true;const b=document.getElementById("download"),s=document.getElementById("status");b.disabled=true;
+try{const parts=[];for(let i=0;i<urls.length;i++){s.textContent="Đang lấy dữ liệu: "+Math.round(i/urls.length*100)+"%";const r=await fetch(urls[i],{cache:"no-store"});if(!r.ok)throw Error("Không thể tải phần "+(i+1)+" (HTTP "+r.status+")");parts.push(await r.text())}
+const blob=new Blob(parts,{type:"text/html;charset=utf-8"});if(blob.size!==6081769)throw Error("Dung lượng không khớp, hãy thử lại. Nhận "+blob.size+" bytes.");
+const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();s.textContent="Đã chuẩn bị file. Nếu chưa tải, nhấn nút một lần nữa.";setTimeout(()=>URL.revokeObjectURL(url),60000);
+}catch(e){s.textContent="Lỗi: "+e.message;console.error(e)}finally{busy=false;b.disabled=false}}
+document.getElementById("download").addEventListener("click",download);
+</script></body></html>

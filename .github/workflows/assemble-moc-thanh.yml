@@ -1,0 +1,26 @@
+name: Assemble Mộc Thanh HTML download
+on:
+  push:
+    branches: [moc-thanh-public-download]
+    paths:
+      - public-downloads/chunks/**
+      - .github/workflows/assemble-moc-thanh.yml
+permissions:
+  contents: write
+jobs:
+  assemble:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: moc-thanh-public-download
+      - name: Join HTML parts
+        run: |
+          cat public-downloads/chunks/part-*.txt > public-downloads/MocThanh_Landing_Desktop_V20_Cafe_NoCornWall.html
+          echo "e933ee132d4f47e1df91f5743bf8fd23a3bcc6b766d76042cc3326a5fa883e70  public-downloads/MocThanh_Landing_Desktop_V20_Cafe_NoCornWall.html" | sha256sum --check
+      - name: Commit assembled file
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public-downloads/MocThanh_Landing_Desktop_V20_Cafe_NoCornWall.html
+          git diff --cached --quiet || (git commit -m "Assemble standalone Mộc Thanh HTML" && git push)
